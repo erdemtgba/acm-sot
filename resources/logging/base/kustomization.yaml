@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - operator.yaml
+  - secret-forwarder.yaml
+  - clusterlogging.yaml
+
+labels:
+  - includeSelectors: false
+    pairs:
+      acm-sot/policy: "logging"

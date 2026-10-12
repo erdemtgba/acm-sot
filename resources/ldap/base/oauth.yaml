@@ -1,0 +1,24 @@
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+    - name: ldap
+      mappingMethod: claim
+      type: LDAP
+      ldap:
+        attributes:
+          id: [sAMAccountName]
+          email: [mail]
+          name: [displayName]
+          preferredUsername: [sAMAccountName]
+        bindDN: CN=svc-openshift,OU=ServiceAccounts,DC=example,DC=local
+        bindPassword:
+          name: ldap-bind-password
+        ca:
+          name: ldap-ca
+        insecure: false
+        url: ldaps://ldap.example.local:636/DC=example,DC=local?sAMAccountName?sub?(objectClass=person)
+  tokenConfig:
+    accessTokenMaxAgeSeconds: 28800

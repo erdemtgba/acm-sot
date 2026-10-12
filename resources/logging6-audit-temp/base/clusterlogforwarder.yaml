@@ -1,0 +1,38 @@
+apiVersion: observability.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: audit-temp
+  namespace: openshift-logging
+  annotations:
+    acm-sot/temporary: "true"
+spec:
+  serviceAccount:
+    name: audit-collector
+  managementState: Managed
+  outputs:
+    - name: audit-http
+      type: http
+      http:
+        url: https://audit-collector.example.local/ingest
+        method: POST
+      authentication:
+        username:
+          secretName: audit-forwarder-auth
+          key: username
+        password:
+          secretName: audit-forwarder-auth
+          key: password
+  filters:
+    - name: audit-policy
+      type: kubeAPIAudit
+      kubeAPIAudit:
+        omitStages: [RequestReceived]
+        rules:
+          - level: None
+            users: ["system:serviceaccount:openshift-*"]
+          - level: Metadata
+  pipelines:
+    - name: audit
+      inputRefs: [audit]
+      filterRefs: [audit-policy]
+      outputRefs: [audit-http]

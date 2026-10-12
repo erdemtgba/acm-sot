@@ -1,0 +1,10 @@
+apiVersion: xuanwu.huawei.io/v1
+kind: StorageBackendClaim
+metadata:
+  name: huawei-backend
+  namespace: huawei-csi
+spec:
+  provider: csi.huawei.com
+  configmapMeta: huawei-csi/huawei-backend-config
+  secretMeta: huawei-csi/huawei-csi-backend-auth
+  maxClientThreads: "30"

@@ -1,0 +1,6 @@
+- op: replace
+  path: /spec/kubeletConfig/maxPods
+  value: 600
+- op: replace
+  path: /spec/kubeletConfig/systemReserved/memory
+  value: 12Gi

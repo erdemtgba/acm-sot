@@ -1,0 +1,17 @@
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  name: internal
+  namespace: openshift-ingress-operator
+spec:
+  domain: apps-internal.ocpint.example.local
+  replicas: 3
+  endpointPublishingStrategy:
+    type: HostNetwork
+  routeSelector:
+    matchLabels:
+      router: internal
+  nodePlacement:
+    nodeSelector:
+      matchLabels:
+        node-role.kubernetes.io/router: ""

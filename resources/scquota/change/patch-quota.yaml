@@ -1,0 +1,6 @@
+- op: replace
+  path: /spec/quota/hard/requests.storage
+  value: 4Ti
+- op: replace
+  path: /spec/quota/hard/huawei-csi.storageclass.storage.k8s.io~1requests.storage
+  value: 2Ti

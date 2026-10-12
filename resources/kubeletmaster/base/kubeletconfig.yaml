@@ -1,0 +1,22 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: master-kubelet-config
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      pools.operator.machineconfiguration.openshift.io/master: ""
+  autoSizingReserved: false
+  kubeletConfig:
+    maxPods: 250
+    podPidsLimit: 4096
+    systemReserved:
+      cpu: 1000m
+      memory: 4Gi
+      ephemeral-storage: 1Gi
+    evictionHard:
+      memory.available: 500Mi
+      nodefs.available: 10%
+      imagefs.available: 15%
+    imageGCHighThresholdPercent: 80
+    imageGCLowThresholdPercent: 70

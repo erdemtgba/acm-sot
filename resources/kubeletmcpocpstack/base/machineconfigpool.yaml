@@ -1,0 +1,16 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: ocpstack
+  labels:
+    pools.operator.machineconfiguration.openshift.io/ocpstack: ""
+spec:
+  maxUnavailable: 1
+  machineConfigSelector:
+    matchExpressions:
+      - key: machineconfiguration.openshift.io/role
+        operator: In
+        values: [worker, ocpstack]
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/ocpstack: ""

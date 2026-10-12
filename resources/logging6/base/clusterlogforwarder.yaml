@@ -1,0 +1,24 @@
+apiVersion: observability.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: collector
+  namespace: openshift-logging
+spec:
+  serviceAccount:
+    name: logcollector
+  managementState: Managed
+  outputs:
+    - name: remote-syslog
+      type: syslog
+      syslog:
+        url: tls://syslog.example.local:6514
+        rfc: RFC5424
+        facility: local0
+      tls:
+        ca:
+          secretName: log-forwarder-tls
+          key: ca-bundle.crt
+  pipelines:
+    - name: app-infra
+      inputRefs: [application, infrastructure]
+      outputRefs: [remote-syslog]

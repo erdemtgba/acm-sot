@@ -1,0 +1,7 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ldap-group-syncer
+  namespace: ldap-sync
+spec:
+  schedule: "*/15 * * * *"

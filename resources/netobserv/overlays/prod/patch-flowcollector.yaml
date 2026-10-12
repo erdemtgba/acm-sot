@@ -1,0 +1,8 @@
+apiVersion: flows.netobserv.io/v1beta2
+kind: FlowCollector
+metadata:
+  name: cluster
+spec:
+  agent:
+    ebpf:
+      sampling: 100

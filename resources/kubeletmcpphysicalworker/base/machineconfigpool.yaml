@@ -1,0 +1,16 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: physical-worker
+  labels:
+    pools.operator.machineconfiguration.openshift.io/physical-worker: ""
+spec:
+  maxUnavailable: 1
+  machineConfigSelector:
+    matchExpressions:
+      - key: machineconfiguration.openshift.io/role
+        operator: In
+        values: [worker, physical-worker]
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/physical-worker: ""

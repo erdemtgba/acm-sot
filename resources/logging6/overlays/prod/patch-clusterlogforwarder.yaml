@@ -1,0 +1,9 @@
+- op: replace
+  path: /spec/outputs/0/syslog/url
+  value: tls://syslog-prod.example.local:6514
+- op: add
+  path: /spec/pipelines/-
+  value:
+    name: audit
+    inputRefs: [audit]
+    outputRefs: [remote-syslog]

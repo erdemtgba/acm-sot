@@ -1,0 +1,7 @@
+apiVersion: config.openshift.io/v1
+kind: Proxy
+metadata:
+  name: cluster
+spec:
+  httpProxy: http://proxy-prod.example.local:8080
+  httpsProxy: http://proxy-prod.example.local:8080

@@ -1,0 +1,22 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: physical-worker-kubelet-config
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      pools.operator.machineconfiguration.openshift.io/physical-worker: ""
+  autoSizingReserved: false
+  kubeletConfig:
+    maxPods: 500
+    podPidsLimit: 4096
+    systemReserved:
+      cpu: 2000m
+      memory: 8Gi
+      ephemeral-storage: 1Gi
+    evictionHard:
+      memory.available: 500Mi
+      nodefs.available: 10%
+      imagefs.available: 15%
+    imageGCHighThresholdPercent: 80
+    imageGCLowThresholdPercent: 70

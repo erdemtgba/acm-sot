@@ -1,0 +1,7 @@
+- op: replace
+  path: /spec/outputs/0/url
+  value: tls://syslog-dmz.example.local:6514
+- op: add
+  path: /spec/pipelines/0/labels
+  value:
+    cluster-env: dmz

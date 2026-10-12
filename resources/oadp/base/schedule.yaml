@@ -1,0 +1,14 @@
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: daily-cluster-backup
+  namespace: openshift-adp
+spec:
+  schedule: "0 1 * * *"
+  template:
+    ttl: 168h0m0s
+    includedNamespaces: ["*"]
+    excludedNamespaces:
+      - openshift-*
+      - kube-*
+    snapshotMoveData: true

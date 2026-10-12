@@ -1,0 +1,7 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: router
+spec:
+  paused: false
+  maxUnavailable: 1

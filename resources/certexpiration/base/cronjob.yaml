@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cert-expiration-checker
+  namespace: cert-expiration
+spec:
+  schedule: "0 6 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          serviceAccountName: cert-expiration-checker
+          restartPolicy: Never
+          containers:
+            - name: checker
+              image: registry.redhat.io/openshift4/ose-cli:latest
+              command: [/bin/bash, /scripts/check-certs.sh]
+              env:
+                - name: THRESHOLD_DAYS
+                  value: "30"
+              resources:
+                requests: {cpu: 50m, memory: 64Mi}
+                limits: {cpu: 200m, memory: 256Mi}
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+          volumes:
+            - name: scripts
+              configMap:
+                name: cert-expiration-scripts
+                defaultMode: 0755

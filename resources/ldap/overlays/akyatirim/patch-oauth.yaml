@@ -1,0 +1,9 @@
+- op: replace
+  path: /spec/identityProviders/0/name
+  value: ldap-akyatirim
+- op: replace
+  path: /spec/identityProviders/0/ldap/url
+  value: ldaps://ldap.akyatirim.example.local:636/DC=akyatirim,DC=example,DC=local?sAMAccountName?sub?(objectClass=person)
+- op: replace
+  path: /spec/identityProviders/0/ldap/bindDN
+  value: CN=svc-openshift,OU=ServiceAccounts,DC=akyatirim,DC=example,DC=local

@@ -1,0 +1,12 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: deny-local-disk-usage
+spec:
+  policyName: deny-local-disk-usage
+  validationActions: [Deny]
+  matchResources:
+    namespaceSelector:
+      matchExpressions:
+        - key: acm-sot/vap-exempt
+          operator: DoesNotExist

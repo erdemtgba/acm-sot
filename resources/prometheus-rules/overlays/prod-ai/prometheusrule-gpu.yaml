@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: gpu-rules
+  namespace: openshift-monitoring
+spec:
+  groups:
+    - name: gpu.rules
+      rules:
+        - alert: GPUHighTemperature
+          expr: DCGM_FI_DEV_GPU_TEMP > 85
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "{{ $labels.Hostname }} GPU {{ $labels.gpu }} sıcaklığı yüksek"
+        - alert: GPUMemoryAlmostFull
+          expr: DCGM_FI_DEV_FB_USED / (DCGM_FI_DEV_FB_USED + DCGM_FI_DEV_FB_FREE) * 100 > 95
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{ $labels.Hostname }} GPU {{ $labels.gpu }} belleği dolmak üzere"

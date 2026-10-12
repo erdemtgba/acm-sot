@@ -1,0 +1,6 @@
+- op: replace
+  path: /spec/backupLocations/0/velero/objectStorage/bucket
+  value: oadp-test
+- op: replace
+  path: /spec/backupLocations/0/velero/config/s3Url
+  value: https://s3-test.example.local

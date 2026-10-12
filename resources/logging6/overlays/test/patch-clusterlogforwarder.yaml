@@ -1,0 +1,3 @@
+- op: replace
+  path: /spec/outputs/0/syslog/url
+  value: tls://syslog-test.example.local:6514

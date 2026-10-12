@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scquota-defaults
+  namespace: openshift-config
+data:
+  default-pvc-max: 500Gi
+  default-pvc-min: 1Gi

@@ -1,0 +1,7 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleNotification
+metadata:
+  name: cluster-environment
+spec:
+  text: "STAGING Ortamı"
+  backgroundColor: "#F0AB00"

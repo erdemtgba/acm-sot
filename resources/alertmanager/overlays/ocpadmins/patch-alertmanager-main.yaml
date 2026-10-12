@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: alertmanager-main
+  namespace: openshift-monitoring
+stringData:
+  alertmanager.yaml: |
+    global:
+      resolve_timeout: 5m
+      smtp_smarthost: smtp.example.local:25
+      smtp_from: openshift-alerts@example.local
+      smtp_require_tls: false
+    route:
+      group_by: [namespace, alertname]
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+      receiver: ocpadmins
+      routes:
+        - matchers: [alertname = Watchdog]
+          receiver: "null"
+        - matchers: [severity = critical]
+          receiver: ocpadmins-critical
+    receivers:
+      - name: "null"
+      - name: ocpadmins
+        email_configs:
+          - to: ocpadmins@example.local
+            send_resolved: true
+      - name: ocpadmins-critical
+        email_configs:
+          - to: ocpadmins-oncall@example.local
+            send_resolved: true

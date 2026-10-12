@@ -1,0 +1,18 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: deny-cluster-admin-binding
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [rbac.authorization.k8s.io]
+        apiVersions: ["*"]
+        operations: [CREATE, UPDATE]
+        resources: [clusterrolebindings, rolebindings]
+  matchConditions:
+    - name: exclude-system-users
+      expression: "!request.userInfo.username.startsWith('system:')"
+  validations:
+    - expression: "object.roleRef.name != 'cluster-admin' || object.metadata.name in ['ocp-admins-cluster-admin']"
+      message: cluster-admin rolü yalnızca onaylı binding'ler üzerinden atanabilir.

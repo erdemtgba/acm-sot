@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pod-resource-usage
+  namespace: pod-resource-usage
+spec:
+  schedule: "*/15 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: pod-resource-usage
+          restartPolicy: Never
+          containers:
+            - name: collector
+              image: registry.redhat.io/openshift4/ose-cli:latest
+              command: [/bin/bash, /scripts/collect-usage.sh]
+              env:
+                - name: RETENTION_DAYS
+                  value: "3"
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                - name: reports
+                  mountPath: /reports
+          volumes:
+            - name: scripts
+              configMap:
+                name: pod-resource-usage-scripts
+                defaultMode: 0755
+            - name: reports
+              persistentVolumeClaim:
+                claimName: pod-resource-usage-reports

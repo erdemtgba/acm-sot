@@ -1,0 +1,33 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: platform-critical
+value: 1000000
+globalDefault: false
+preemptionPolicy: PreemptLowerPriority
+description: Platform bileşenleri için kritik öncelik.
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: app-high
+value: 100000
+globalDefault: false
+description: Yüksek öncelikli uygulama iş yükleri.
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: app-default
+value: 10000
+globalDefault: true
+description: Varsayılan uygulama önceliği.
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: app-low
+value: 1000
+globalDefault: false
+preemptionPolicy: Never
+description: Batch / düşük öncelikli iş yükleri.

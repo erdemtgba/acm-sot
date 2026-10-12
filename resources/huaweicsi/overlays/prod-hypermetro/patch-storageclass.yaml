@@ -1,0 +1,6 @@
+- op: replace
+  path: /parameters/pool
+  value: StoragePool-prod
+- op: add
+  path: /parameters/hyperMetro
+  value: "true"

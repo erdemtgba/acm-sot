@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - rbac.yaml
+  - secret.yaml
+  - clusterlogforwarder.yaml
+
+labels:
+  - includeSelectors: false
+    pairs:
+      acm-sot/policy: "logging6-audit-temp"

@@ -1,0 +1,9 @@
+- op: replace
+  path: /spec/identityProviders/0/name
+  value: ldap-intranet
+- op: replace
+  path: /spec/identityProviders/0/ldap/url
+  value: ldaps://ldap.intranet.example.local:636/DC=intranet,DC=example,DC=local?sAMAccountName?sub?(objectClass=person)
+- op: replace
+  path: /spec/identityProviders/0/ldap/bindDN
+  value: CN=svc-openshift,OU=ServiceAccounts,DC=intranet,DC=example,DC=local

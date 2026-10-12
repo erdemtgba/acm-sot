@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - rbac.yaml
+  - pvc.yaml
+  - cronjob.yaml
+
+labels:
+  - includeSelectors: false
+    pairs:
+      acm-sot/policy: "pod-resource-usage-temp"
+
+configMapGenerator:
+  - name: pod-resource-usage-scripts
+    namespace: pod-resource-usage
+    files:
+      - collect-usage.sh
+    options:
+      disableNameSuffixHash: true

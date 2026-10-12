@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+labels:
+  - includeSelectors: false
+    pairs:
+      acm-sot/environment: "prod-hypermetro"
+      acm-sot/storage-mode: "hypermetro"
+
+patches:
+  - path: patch-backend-config.yaml
+  - path: patch-storageclass.yaml
+    target:
+      kind: StorageClass
+      name: huawei-csi

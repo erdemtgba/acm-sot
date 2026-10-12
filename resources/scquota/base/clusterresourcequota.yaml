@@ -1,0 +1,17 @@
+apiVersion: quota.openshift.io/v1
+kind: ClusterResourceQuota
+metadata:
+  name: storageclass-quota
+spec:
+  selector:
+    labels:
+      matchExpressions:
+        - key: acm-sot/storage-quota
+          operator: In
+          values: ["enabled"]
+  quota:
+    hard:
+      requests.storage: 2Ti
+      persistentvolumeclaims: "200"
+      huawei-csi.storageclass.storage.k8s.io/requests.storage: 1Ti
+      huawei-csi.storageclass.storage.k8s.io/persistentvolumeclaims: "100"

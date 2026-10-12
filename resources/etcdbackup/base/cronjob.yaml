@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: etcd-backup
+  namespace: etcd-backup
+spec:
+  schedule: "0 */6 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          serviceAccountName: etcd-backup
+          restartPolicy: Never
+          hostNetwork: true
+          nodeSelector:
+            node-role.kubernetes.io/master: ""
+          tolerations:
+            - effect: NoSchedule
+              operator: Exists
+          containers:
+            - name: backup
+              image: registry.redhat.io/openshift4/ose-cli:latest
+              envFrom:
+                - configMapRef:
+                    name: etcd-backup-config
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  set -euo pipefail
+                  chroot /host /usr/local/bin/cluster-backup.sh /home/core/backup
+                  dest="${BACKUP_DIR}/$(date +%Y%m%d-%H%M)"
+                  mkdir -p "$dest" && cp -r /host/home/core/backup/* "$dest"/
+                  rm -rf /host/home/core/backup
+                  find "${BACKUP_DIR}" -mindepth 1 -maxdepth 1 -type d -mtime +"${RETENTION_DAYS}" -exec rm -rf {} +
+              securityContext:
+                privileged: true
+                runAsUser: 0
+              volumeMounts:
+                - name: host
+                  mountPath: /host
+                - name: backup
+                  mountPath: /backup
+          volumes:
+            - name: host
+              hostPath:
+                path: /
+                type: Directory
+            - name: backup
+              persistentVolumeClaim:
+                claimName: etcd-backup

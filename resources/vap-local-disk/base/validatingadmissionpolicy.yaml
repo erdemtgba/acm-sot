@@ -1,0 +1,20 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: deny-local-disk-usage
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [pods]
+  matchConditions:
+    - name: exclude-openshift-namespaces
+      expression: "!object.metadata.namespace.startsWith('openshift')"
+  validations:
+    - expression: "!has(object.spec.volumes) || object.spec.volumes.all(v, !has(v.hostPath))"
+      message: hostPath volume kullanımı yasaktır.
+    - expression: "!has(object.spec.volumes) || object.spec.volumes.all(v, !has(v.emptyDir) || has(v.emptyDir.sizeLimit))"
+      message: emptyDir volume'ları için sizeLimit tanımlanmalıdır.

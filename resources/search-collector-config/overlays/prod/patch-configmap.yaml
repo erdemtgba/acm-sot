@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: search-collector-config
+  namespace: open-cluster-management-agent-addon
+data:
+  DeniedResources: |-
+    - apiGroups: [""]
+      resources: ["secrets", "events", "configmaps"]
+    - apiGroups: ["admission.k8s.io", "authentication.k8s.io"]
+      resources: ["*"]
+    - apiGroups: ["coordination.k8s.io"]
+      resources: ["leases"]

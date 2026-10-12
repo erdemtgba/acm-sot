@@ -1,0 +1,16 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: router
+  labels:
+    pools.operator.machineconfiguration.openshift.io/router: ""
+spec:
+  maxUnavailable: 1
+  machineConfigSelector:
+    matchExpressions:
+      - key: machineconfiguration.openshift.io/role
+        operator: In
+        values: [worker, router]
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/router: ""

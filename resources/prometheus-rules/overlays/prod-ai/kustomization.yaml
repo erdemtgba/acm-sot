@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - prometheusrule-gpu.yaml
+
+labels:
+  - includeSelectors: false
+    pairs:
+      acm-sot/environment: "prod-ai"
+      acm-sot/workload: "ai"
+
+patches:
+  - path: patch-severity.yaml
+    target:
+      kind: PrometheusRule
+      name: platform-custom-rules
